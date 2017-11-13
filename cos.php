@@ -1,27 +1,29 @@
 <?php
 include "includes/head.php";
-include "includes/db.php";
+//include "includes/db.php";
+include "classes/class_db.php";
 include "classes/class_cos.php";
 //print_r($_POST);
 $cos = new Cos;
+$db = new DataBase();
 if (isset ($_POST['delete']))
 {
-	$cos->GolesteCos($pdo);
+	$cos->GolesteCos($db);
 }
 if (isset ($_POST['update']))
 {
 	foreach ($_POST as $k=>$v)
 	{
-		$cos->ActualizeazaCos($k, $v, $pdo);
+		$cos->ActualizeazaCos($k, $v, $db);
 	}
 }
-$cos->IncarcaCos($pdo);
+$cos->IncarcaCos($db);
 if (isset ($_POST['id']) && isset ($_POST['quantity']))
 {
 	$id_product = $_POST['id'];
 	$quantity = $_POST['quantity'];	
 	$query_exist = "SELECT * FROM `cos` WHERE `ID` = $id_product";
-	$exist = $pdo->query($query_exist)->fetchAll(PDO::FETCH_ASSOC);
+	$exist = $db->Query($query_exist);
 	if($exist)
 	{
 		$query_update = "UPDATE `cos` SET `cantitate` = $quantity + `cos`.`cantitate`  WHERE `cos`.`ID` = $id_product";
@@ -31,8 +33,8 @@ if (isset ($_POST['id']) && isset ($_POST['quantity']))
 		$query_update = "INSERT INTO `cos` (`ID`, `cantitate`) VALUES ($id_product, $quantity)";
 	}
 	
-	$cos->AdaugaProdus($pdo,$query_update,$id_product,$quantity);
-	$cos->IncarcaCos($pdo);
+	$cos->AdaugaProdus($db,$query_update,$id_product,$quantity);
+	$cos->IncarcaCos($db);
 
 }
 //var_dump ($exist);
@@ -58,7 +60,7 @@ if (isset ($_POST['id']) && isset ($_POST['quantity']))
 		<span class="caret"></span></a>
 		<ul class="dropdown-menu">
 		<?php
-		foreach ($pdo->query("SELECT * FROM produse") as $produs)
+		foreach ($db->Query("SELECT * FROM produse") as $produs)
 		{
 			echo "<li><a href = produs.php?id=".$produs['ID'].">".$produs['Denumire']."</a></li>";
 		}
@@ -83,7 +85,7 @@ if (isset ($_POST['id']) && isset ($_POST['quantity']))
         <div class="panel-heading text-center">Lista produse</div>
         <div class="panel-body">
 		<?php
-			foreach ($pdo->query("SELECT * FROM produse") as $v)
+			foreach ($db->Query("SELECT * FROM produse") as $v)
 			{
 				$poza = $v['Poza'];
 				$id = $v['ID'];
@@ -100,7 +102,7 @@ if (isset ($_POST['id']) && isset ($_POST['quantity']))
         <div class="panel-body">
 			<?php
 				$query_exist2 = "SELECT * FROM `cos`";
-				$exist2 = $pdo->query($query_exist2)->fetchAll(PDO::FETCH_ASSOC);
+				$exist2 = $db->Query($query_exist2);
 				if (!isset ($_POST['checkout']))
 				{
 					include "includes/form_cos.html";

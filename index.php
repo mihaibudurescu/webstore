@@ -2,8 +2,10 @@
 <html lang="en">
 <?php 
 	include 'includes/head.php';
-	include 'includes/db.php'; 	
+	//include 'includes/db.php';
+    include 'classes/class_db.php';
 	session_start();
+    $db = new DataBase();
  ?>
 
 <nav class="navbar navbar-inverse">
@@ -24,7 +26,8 @@
 		<span class="caret"></span></a>
 		<ul class="dropdown-menu">
 		<?php
-		foreach ($pdo->query("SELECT * FROM produse") as $v)
+		//foreach ($pdo->query("SELECT * FROM produse") as $v)
+        foreach ($db->Query("SELECT * FROM produse") as $v)
 		{
 			echo "<li><a href = 'produs.php?id=".$v['ID']."'>".$v['Denumire']."</a></li>";
 		}
@@ -57,7 +60,8 @@
         <div class="panel-heading">Lista produse</div>
         <div class="panel-body">
 		<?php
-			foreach ($pdo->query("SELECT * FROM produse") as $v)
+			//foreach ($pdo->query("SELECT * FROM produse") as $v)
+            foreach($db->Query("SELECT * FROM produse") as $v)
 			{
 				$poza = $v['Poza'];
 				$id = $v['ID'];

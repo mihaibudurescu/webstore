@@ -1,13 +1,15 @@
 <?php
 session_start();
 include "../includes/head.php";
-include "../includes/navbar_admin.html";
-include "../includes/db.php";
+include "../includes/navbar_admin.php";
+//include "../includes/db.php";
 
 if($_SESSION['logat'])
 {
+    $db = new DataBase();
 	$query_comenzi = "SELECT * FROM `comenzi`";
-	$comenzi = $pdo->query($query_comenzi)->fetchAll();	
+	//$comenzi = $db->query($query_comenzi)->fetchAll();
+    $comenzi = $db->Query($query_comenzi);
 }
 
 ?>

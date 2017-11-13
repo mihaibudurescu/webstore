@@ -12,7 +12,7 @@
 			</thead>
 			<tbody>
 				<?php 
-				foreach ($pdo->query("SELECT * FROM produse") as $v)
+				foreach ($db->Query("SELECT * FROM produse") as $v)
 				{
 					echo "<tr>	
 						<td><input type='checkbox' name='select_$v[ID]' value = $v[ID]></td>

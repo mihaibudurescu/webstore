@@ -1,0 +1,4 @@
+dbname=magazin
+username=root
+password=
+

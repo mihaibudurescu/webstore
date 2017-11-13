@@ -1,7 +1,7 @@
 <?php 
 include "../includes/head.php";
-include "../includes/navbar_admin.html";
-include "../includes/db.php";
+include "../includes/navbar_admin.php";
+//include "../includes/db.php";
 
 ?>
 <div class='col-sm-9 text-center'> 
@@ -32,8 +32,8 @@ else
 	$pret = trim($_POST['pret']);
 	$poza = htmlspecialchars($_POST['poza']);
 	$query = "INSERT INTO `produse` (`ID`,`Denumire`, `Descriere`,`Poza`,`Pret`) VALUES (NULL,'$denumire', '$descriere', '$poza', $pret)";
-	
-	$add = $pdo->exec($query);
+	$db = new DataBase();
+	$add = $db->Query($query);
 	
 	if ($add == false)
 	{		

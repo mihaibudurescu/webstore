@@ -10,7 +10,7 @@
 			</thead>
 			<tbody>
 				<?php 			
-				foreach ($pdo->query("SELECT * FROM `produse` WHERE `ID` = $_GET[id]") as $v)
+				foreach ($db->Query("SELECT * FROM `produse` WHERE `ID` = $_GET[id]") as $v)
 				{
 					echo "<tr>
 						 <input type='hidden' name='id_produs' value='$v[ID]'>

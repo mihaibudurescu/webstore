@@ -1,7 +1,9 @@
 <?php
 include "includes/head.php";
-include "includes/db.php";
-session_start();	
+include 'classes/class_db.php';
+//include "includes/db.php";
+session_start();
+$db = new DataBase();
 ?>
 
 <nav class="navbar navbar-inverse">
@@ -22,7 +24,8 @@ session_start();
 		<span class="caret"></span></a>
 		<ul class="dropdown-menu">
 		<?php
-		foreach ($pdo->query("SELECT * FROM produse") as $v)
+		//foreach ($pdo->query("SELECT * FROM produse") as $v)
+        foreach ($db->Query("SELECT * FROM produse") as $v)
 		{
 			echo "<li><a href = 'produs.php?id=".$v['ID']."'>".$v['Denumire']."</a></li>";
 		}
@@ -66,7 +69,8 @@ session_start();
 				$mesaj = htmlspecialchars($_POST['mesaj']);
 				
 				$query = "INSERT INTO `mesaje` (`ID`, `Nume`, `Contact`, `Mesaj`) VALUES (NULL, '$nume', '$contact', '$mesaj')";
-				$add_mesaj = $pdo->exec($query);
+				//$add_mesaj = $pdo->exec($query);
+                $add_mesaj = $db->Query($query);
 				if($add_mesaj)
 				{
 					echo "<h4> Mesajul dvs. a fost trimis!";

@@ -1,13 +1,16 @@
 <?php 
 include "includes/head.php";
-include "includes/db.php";
+include "classes/class_db.php";
+//include "includes/db.php";
 session_start();
+$db = new DataBase();
+
 if( isset( $_GET['id'] ) && is_numeric( $_GET['id'])) {
 	$id_produs = $_GET['id'];
 	$query = "SELECT * FROM `produse` WHERE `ID` = '$id_produs'";
-
-    $a = $pdo->query($query);
-    $r = $a->fetchAll(PDO::FETCH_ASSOC);
+    //$a = $pdo->query($query);
+    //$r = $a->fetchAll(PDO::FETCH_ASSOC);
+    $r = $db->Query($query);
 }
 
 ?>
@@ -30,7 +33,8 @@ if( isset( $_GET['id'] ) && is_numeric( $_GET['id'])) {
 		<span class="caret"></span></a>
 		<ul class="dropdown-menu">
 		<?php
-		foreach ($pdo->query("SELECT * FROM produse") as $v)
+		//foreach ($pdo->query("SELECT * FROM produse") as $v)
+        foreach ($db->Query("SELECT * FROM produse") as $v)
 		{
 			echo "<li><a href = produs.php?id=".$v['ID'].">".$v['Denumire']."</a></li>";
 		}

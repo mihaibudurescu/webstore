@@ -6,7 +6,8 @@ $regex_date = '/^(listareproduse|detaliiprodus)\.(json|xml)[\/?\d+?]?/';
 //print_r($_SERVER['PATH_INFO']);
 if (preg_match($regex_date ,$date))
 {
-	include "../includes/db.php";
+	include "../classes/class_db.php";
+    $db = new DataBase();
 	$date = explode('.' , $date);
 	$listareProduse = in_array("listareproduse",$date);
 	$detaliiProdus = in_array("detaliiprodus", $date);
@@ -27,7 +28,7 @@ if (preg_match($regex_date ,$date))
 	}
 	if ($listareProduse)
 	{		
-		$sql = $pdo->query($query_denumire)->fetchAll(PDO::FETCH_ASSOC);
+		$sql = $db->Query($query_denumire);
 		switch ($format)
 		{
 			case "json":
@@ -49,7 +50,7 @@ if (preg_match($regex_date ,$date))
 	{
 		$format = trim(substr($format,0,strpos($format, "/")),"/");
 		$query = "SELECT * FROM `produse` WHERE `ID` = '$id'";
-		$sql = $pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
+		$sql = $db->Query($query);
 		if($sql)
 		{
 			http_response_code(200);

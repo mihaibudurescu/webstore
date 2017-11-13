@@ -1,6 +1,7 @@
 <?php
 include "../includes/head.php";
-include "../includes/db.php";
+//include "../includes/db.php";
+include "../classes/class_db.php";
 ?>
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -20,8 +21,8 @@ include "../includes/db.php";
 		<span class="caret"></span></a>
 		<ul class="dropdown-menu">
 		<?php
-		
-		foreach ($pdo->query("SELECT * FROM produse") as $v)
+        $db = new DataBase();
+		foreach ($db->Query("SELECT * FROM produse") as $v)
 		{
 			echo "<li><a href = ../produs.php?id=".$v['ID'].">".$v['Denumire']."</a></li>";
 		}

@@ -1,8 +1,10 @@
 <?php
 include "includes/head.php";
 include "includes/navbar.html";
-include "includes/db.php";
+//include "includes/db.php";
 include "classes/class_cos.php";
+include "classes/class_db.php";
+$db = new DataBase();
 //print_r($_POST);
 $regex_nume = '/^([A-Za-z][A-Za-z]+[ ,\'])+[A-Za-z][A-Za-z]+$/';
 $regex_tel = '/^((00|\+)?4)?07\d\d([\.\- ]?\d{3}){2}$/';
@@ -59,17 +61,19 @@ else
 	$adresa = htmlspecialchars($_POST['adresa']);
 								
 	$adauga_comanda = "INSERT INTO `comenzi` (`ID_Comanda`, `Nume`, `Adresa`, `Telefon`) VALUES (NULL, '$nume', '$adresa', '$tel')";
-	$add = $pdo->exec($adauga_comanda);
-	$id_comanda = $pdo->lastInsertId();
+	//$add = $db->exec($adauga_comanda);
+    $add = $db->Query($adauga_comanda);
+	$id_comanda = $db->LastInsertID();
 								
 	$cos = new Cos;
-	$cos->IncarcaCos($pdo);
+	$cos->IncarcaCos($db);
 	$produse_cos = $cos->Get_Cos();
 
 	foreach ($produse_cos as $produs)
 	{	
 		$query_comenzi_produse = "INSERT INTO `comenzi_produse` (`ID_Comanda`, `ID_Produs`, `Cantitate`) VALUES ('$id_comanda', '$produs[ID]', '$produs[Cantitate]')";
-		$pdo->exec($query_comenzi_produse);
+		//$db->exec($query_comenzi_produse);
+        $db->Query($query_comenzi_produse);
 	}
 	if ($add !== false)
 	{

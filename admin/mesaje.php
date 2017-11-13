@@ -3,8 +3,8 @@ session_start();
 if (isset ($_SESSION['logat']))
 {
 	include "../includes/head.php";
-    include "../includes/navbar_admin.html";
-    include "../includes/db.php";
+    include "../includes/navbar_admin.php";
+    //include "../includes/db.php";
 }
 ?>
 <body>
@@ -36,7 +36,7 @@ if (isset ($_SESSION['logat']))
 			<tbody>
 			<?php 		
 			$query = "SELECT * FROM `mesaje`";
-			$rez = $pdo->query($query)->fetchAll();
+			$rez = $db->Query($query);
 			if($rez === false)
 			{
 				echo "<h4>Nu aveti mesaje</h4>";

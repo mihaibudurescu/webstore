@@ -1,7 +1,7 @@
 <?php
 include "../includes/head.php";
-include "../includes/navbar_admin.html";
-include "../includes/db.php";
+include "../includes/navbar_admin.php";
+//include "../includes/db.php";
 //print_r($_POST);
 //print_r($_GET);
 ?>
@@ -28,8 +28,9 @@ if(isset($_POST['delete']))
 	{
 		foreach($k as $v)
 		{
-			$query = "DELETE FROM `produse` WHERE `produse`.`ID` = $v"; 
-			$delete = $pdo->exec($query);
+			$query = "DELETE FROM `produse` WHERE `produse`.`ID` = $v";
+			//$delete = $db->exec($query);
+            $delete = $db->Query($query);
 			if ($delete)
 			{
 				echo "<h4>Produsul cu ID: <strong>$v</strong> a fost sters cu succes</h4><br>
@@ -57,7 +58,7 @@ if(isset($_POST['update']))
 		$query_update = "UPDATE `produse` SET `Denumire` = '$denumire', `Descriere` = '$descriere' ,
 		`Pret` = '$pret' , `Poza` = '$poza'	WHERE `produse`.`ID` = $id_produs";
 		
-		$update = $pdo->exec($query_update);
+		$update = $db->Query($query_update);
 		if($update)
 		{
 			echo "<h4>Produsul cu ID-ul <strong>$id_produs</strong> a fost actualizat cu succes!</h4><br>

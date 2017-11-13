@@ -4,15 +4,15 @@ class Cos
 	private $produse = [];
 	private $pretTotal;
 	
-	function AdaugaProdus($pdo, $query, $id_product, $quantity)
+	function AdaugaProdus($db, $query, $id_product, $quantity)
 	{
-		$add = $pdo->exec($query);
+		$add = $db->Query($query);
 	}
 	
-	function IncarcaCos($pdo)
+	function IncarcaCos($db)
 	{
 		$query = "SELECT produse.ID, Denumire, Pret, Cantitate FROM produse JOIN cos ON produse.ID = cos.ID";
-		$this->produse = $pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
+		$this->produse = $db->Query($query);
 	}
 	
 	function AfiseazaCos()
@@ -34,26 +34,27 @@ class Cos
 			<p><h3>Total: $this->pretTotal Ron</h3></p>";
 	}
 	
-	function ActualizeazaCos($k, $v, $pdo)
+	function ActualizeazaCos($k, $v, $db)
 	{
 		$regex_key1 = '/^delete_\d+$/';
 		$regex_key2 = '/^new_quantity_\d+$/';
 		if (preg_match($regex_key1, $k))
 		{
 			$query = "DELETE FROM `cos` WHERE `cos`.`ID` = $v"; 
-			$pdo->exec($query);
+			$db->Query($query);
 		}
 		if (preg_match($regex_key2, $k))
 		{
 			$id = trim($k, "new_quantity_");
 			$query = "UPDATE `cos` SET `cantitate` = '$v' WHERE `cos`.`ID` = '$id'";
-			$pdo->exec($query);
+			$db->Query($query);
 		}
 	}
-	function GolesteCos($pdo)
+	function GolesteCos($db)
 	{
 		$query = "DELETE FROM `cos`";
-		$pdo->exec($query);
+		//$pdo->exec($query);
+        $db->Query($query);
 	}
 	
 	function Get_Cos()

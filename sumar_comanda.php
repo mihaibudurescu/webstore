@@ -13,7 +13,7 @@ include "classes/class_cos.php";
         <div class="panel-heading">Lista produse</div>
         <div class="panel-body">
 		<?php
-			foreach ($pdo->query("SELECT * FROM produse") as $v)
+			foreach ($db->query("SELECT * FROM produse") as $v)
 			{
 				$poza = $v['Poza'];
 				$id = $v['ID'];
@@ -31,7 +31,7 @@ include "classes/class_cos.php";
             <div class="panel-body">
 				<?php
 					$cos = new Cos;
-					$cos->IncarcaCos($pdo);
+					$cos->IncarcaCos($db);
 					$produse_cos = $cos->Get_Cos();
 					if (is_numeric($_GET['comanda']))
 					{
@@ -39,7 +39,7 @@ include "classes/class_cos.php";
 					}
 					$pretTotal ="";
 					$query = "SELECT * FROM `comenzi` WHERE ID_Comanda = $id_comanda";
-					$rez  = $pdo->query($query)->fetchAll();
+					$rez  = $db->query($query)->fetchAll();
 					echo "<h4>Felicitari! Comanda dumneavoastra a fost inregistrata cu succes!</h4>
 										<p><h5>Date identificare comanda nr. <strong>$id_comanda:</strong> </h5></p>"
 										            .$rez[0]['Nume']."<br>"
@@ -68,7 +68,7 @@ include "classes/class_cos.php";
 					echo "</tbody>
 							</table>
 							<p><h4>Total: $pretTotal Ron</h4></p>";		
-					$cos->GolesteCos($pdo);				
+					$cos->GolesteCos($db);
 				?>
            </div>
           </div>
