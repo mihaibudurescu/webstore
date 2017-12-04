@@ -1,9 +1,7 @@
 <?php
 include "../includes/head.php";
 include "../includes/navbar_admin.php";
-//include "../includes/db.php";
 session_start();
-
 $form_login = <<<FORM
 	<form method ='post' action = '$_SERVER[PHP_SELF]'>
 	User: <input type = 'text' name='username'><br>
@@ -38,7 +36,7 @@ FORM;
 			$username = $_POST['username'];
 			$parola = $_POST['parola'];
 			$query_useri = "SELECT * FROM `useri` where `utilizator` = '$username'";
-			$rez = $db->Query($query_useri);
+			$rez = $db->query($query_useri);
 			if (!$rez || ($rez[0]['parola'] !== $parola))
 			{
 				$msg = "Username sau parola gresite!";

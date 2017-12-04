@@ -1,7 +1,6 @@
 <?php 
 include "../includes/head.php";
 include "../includes/navbar_admin.php";
-//include "../includes/db.php";
 
 ?>
 <div class='col-sm-9 text-center'> 
@@ -9,19 +8,19 @@ include "../includes/navbar_admin.php";
 			<div class='panel-heading text-center'>Modifica Produse</div>
 			<div class='panel-body'>
 <?php
-$erori = false;
+$errors = false;
 if (empty($_POST['denumire']))
 {
 	echo "<p><h4>Introduceti o denumire de produs</h4></p>";
-	$erori = true;	
+	$errors = true;
 }
 
 if (empty($_POST['pret']) || !is_numeric($_POST['pret']))
 {
 	echo "<p><h4>Introduceti un pret format din cifre</h4></p>";
-	$erori = true;
+	$errors = true;
 }
-if ($erori)
+if ($errors)
 {
 	include "form_add.php";
 }
@@ -32,8 +31,8 @@ else
 	$pret = trim($_POST['pret']);
 	$poza = htmlspecialchars($_POST['poza']);
 	$query = "INSERT INTO `produse` (`ID`,`Denumire`, `Descriere`,`Poza`,`Pret`) VALUES (NULL,'$denumire', '$descriere', '$poza', $pret)";
-	$db = new DataBase();
-	$add = $db->Query($query);
+	$db = new Db();
+	$add = $db->query($query);
 	
 	if ($add == false)
 	{		

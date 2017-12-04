@@ -1,19 +1,16 @@
 <?php 
 include "includes/head.php";
-include "classes/class_db.php";
-//include "includes/db.php";
+include "classes/Db.php";
 session_start();
-$db = new DataBase();
+$db = new Db();
 
 if( isset( $_GET['id'] ) && is_numeric( $_GET['id'])) {
 	$id_produs = $_GET['id'];
 	$query = "SELECT * FROM `produse` WHERE `ID` = '$id_produs'";
-    //$a = $pdo->query($query);
-    //$r = $a->fetchAll(PDO::FETCH_ASSOC);
-    $r = $db->Query($query);
+    $r = $db->query($query);
 }
-
 ?>
+
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -33,8 +30,7 @@ if( isset( $_GET['id'] ) && is_numeric( $_GET['id'])) {
 		<span class="caret"></span></a>
 		<ul class="dropdown-menu">
 		<?php
-		//foreach ($pdo->query("SELECT * FROM produse") as $v)
-        foreach ($db->Query("SELECT * FROM produse") as $v)
+        foreach ($db->query("SELECT * FROM produse") as $v)
 		{
 			echo "<li><a href = produs.php?id=".$v['ID'].">".$v['Denumire']."</a></li>";
 		}
@@ -51,7 +47,7 @@ if( isset( $_GET['id'] ) && is_numeric( $_GET['id'])) {
 		}
 		else 
 		{
-			echo "<a href='cos.php'><span class='glyphicon glyphicon-shopping-cart'></span> Vizualizare cos</a></li>";
+			echo "<a href='view_cart.php'><span class='glyphicon glyphicon-shopping-cart'></span> Vizualizare cos</a></li>";
 		}
 		?>
       </ul>
@@ -75,7 +71,7 @@ if( isset( $_GET['id'] ) && is_numeric( $_GET['id'])) {
 			echo "<p><strong>".$r[0]['Pret']." Ron</strong><p>";
 			?>
 			</div>
-			<form class="add-to-cart" action="cos.php" method="post">
+			<form class="add-to-cart" action="view_cart.php" method="post">
 							<div>
 								<input type="hidden" name="id" value="<?php echo $id_produs ?>">
 								<label for="quantity">Cantitate</label>

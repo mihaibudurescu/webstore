@@ -1,8 +1,9 @@
 <?php
 include "includes/head.php";
 include "includes/navbar.html";
-include "includes/db.php";
-include "classes/class_cos.php";
+include "classes/Db.php";
+include "classes/Cart.php";
+$db = new Db();
 ?>
 
 <body>
@@ -30,18 +31,14 @@ include "classes/class_cos.php";
 		  <div class="panel-heading">Sumar comanda</div>
             <div class="panel-body">
 				<?php
-					$cos = new Cos;
-					$cos->IncarcaCos($db);
-					$produse_cos = $cos->Get_Cos();
 					if (is_numeric($_GET['comanda']))
 					{
-						$id_comanda = $_GET['comanda'];
+						$order_id = $_GET['comanda'];
 					}
-					$pretTotal ="";
-					$query = "SELECT * FROM `comenzi` WHERE ID_Comanda = $id_comanda";
-					$rez  = $db->query($query)->fetchAll();
+					$query = "SELECT * FROM `comenzi` WHERE ID_Comanda = $order_id";
+					$rez  = $db->query($query);
 					echo "<h4>Felicitari! Comanda dumneavoastra a fost inregistrata cu succes!</h4>
-										<p><h5>Date identificare comanda nr. <strong>$id_comanda:</strong> </h5></p>"
+										<p><h5>Date identificare comanda nr. <strong>$order_id:</strong> </h5></p>"
 										            .$rez[0]['Nume']."<br>"
 													.$rez[0]['Adresa']."<br>"
 													.$rez[0]['Telefon']."<br>
@@ -54,21 +51,24 @@ include "classes/class_cos.php";
 										<th>Total</th>
 									</tr>
 								</thead>";
-					foreach ($produse_cos as $produs)
+					$query_order = "SELECT ID_Comanda,ID_Produs,Denumire,Cantitate,Pret FROM comenzi_produse JOIN produse ON comenzi_produse.ID_Produs = produse.ID WHERE ID_Comanda = $order_id";
+					$order_products = $db->query($query_order);
+					$totalPrice = "";
+					foreach ($order_products as $product)
 					{
-						$pretTotalProdus = $produs['Cantitate'] * $produs['Pret'];
-						$pretTotal += $pretTotalProdus;
-								
+						$totalProductPrice = $product['Cantitate'] * $product['Pret'];
+						$totalPrice += $totalProductPrice;
 						echo "<tr>	
-							<td>$produs[Cantitate] X $produs[Denumire]</td>
-							<td> $produs[Pret] Ron</td>
-							<td>$pretTotalProdus</td>
+							<td>$product[Cantitate] X $product[Denumire]</td>
+							<td> $product[Pret] Ron</td>
+							<td>$totalProductPrice</td>
 							</tr>";
 					}			
 					echo "</tbody>
 							</table>
-							<p><h4>Total: $pretTotal Ron</h4></p>";		
-					$cos->GolesteCos($db);
+							<p><h4>Total: $totalPrice Ron</h4></p>";
+                    $cart = new Cart();
+					$cart->emptyCart($db);
 				?>
            </div>
           </div>

@@ -1,9 +1,8 @@
 <?php
-include "includes/head.php";
-include 'classes/class_db.php';
-//include "includes/db.php";
 session_start();
-$db = new DataBase();
+include "includes/head.php";
+include 'classes/Db.php';
+$db = new Db();
 ?>
 
 <nav class="navbar navbar-inverse">
@@ -24,8 +23,7 @@ $db = new DataBase();
 		<span class="caret"></span></a>
 		<ul class="dropdown-menu">
 		<?php
-		//foreach ($pdo->query("SELECT * FROM produse") as $v)
-        foreach ($db->Query("SELECT * FROM produse") as $v)
+        foreach ($db->query("SELECT * FROM produse") as $v)
 		{
 			echo "<li><a href = 'produs.php?id=".$v['ID']."'>".$v['Denumire']."</a></li>";
 		}
@@ -42,7 +40,7 @@ $db = new DataBase();
 		}
 		else 
 		{
-			echo "<a href='cos.php'><span class='glyphicon glyphicon-shopping-cart'></span> Vizualizare cos</a></li>";
+			echo "<a href='view_cart.php'><span class='glyphicon glyphicon-shopping-cart'></span> Vizualizare cos</a></li>";
 		}
 		?>
       </ul>
@@ -67,10 +65,8 @@ $db = new DataBase();
 				$nume = htmlspecialchars(trim($_POST['nume']));
 				$contact = htmlspecialchars($_POST['contact']);
 				$mesaj = htmlspecialchars($_POST['mesaj']);
-				
 				$query = "INSERT INTO `mesaje` (`ID`, `Nume`, `Contact`, `Mesaj`) VALUES (NULL, '$nume', '$contact', '$mesaj')";
-				//$add_mesaj = $pdo->exec($query);
-                $add_mesaj = $db->Query($query);
+                $add_mesaj = $db->query($query);
 				if($add_mesaj)
 				{
 					echo "<h4> Mesajul dvs. a fost trimis!";

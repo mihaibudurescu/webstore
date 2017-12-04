@@ -2,14 +2,12 @@
 session_start();
 include "../includes/head.php";
 include "../includes/navbar_admin.php";
-//include "../includes/db.php";
 
 if($_SESSION['logat'])
 {
-    $db = new DataBase();
-	$query_comenzi = "SELECT * FROM `comenzi`";
-	//$comenzi = $db->query($query_comenzi)->fetchAll();
-    $comenzi = $db->Query($query_comenzi);
+    $db = new Db();
+	$query_comenzi = "SELECT * FROM `comenzi` ORDER BY `ID_Comanda` DESC ";
+    $comenzi = $db->query($query_comenzi);
 }
 
 ?>

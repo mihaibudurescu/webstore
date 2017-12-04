@@ -5,10 +5,13 @@
  * Date: 11/12/2017
  * Time: 12:04 PM
  */
-class DataBase
+class Db
 {
     private $connection;
 
+    /**
+     * DataBase constructor.
+     */
     public function __construct()
     {
         $content = file("C:\wamp64\www\proiect2\config_file.txt");
@@ -26,7 +29,12 @@ class DataBase
         $this->connection = new PDO("mysql:host=localhost;dbname=$dbname", "$username", "$password");
     }
 
-    function Query($query)
+    /**
+     * function to make changes in database, depending of the sql operation kind
+     * @param $query
+     * @return array|int
+     */
+    function query($query)
     {
         if (preg_match('/^select/i', $query))
         {
@@ -40,7 +48,12 @@ class DataBase
             return $this->connection->exec($query);
         }
     }
-    function LastInsertID()
+
+    /**
+     * public method to obtain the result of predefined function lastInsertId() for the PDO private property
+     * @return string
+     */
+    function getLastInsertID()
     {
         return $this->connection->lastInsertId();
     }

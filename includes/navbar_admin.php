@@ -1,5 +1,6 @@
 <?php
-    include "../classes/class_db.php";
+include "../classes/Db.php";
+
 ?>
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -19,8 +20,8 @@
 		<span class="caret"></span></a>
 		<ul class="dropdown-menu">
 		<?php
-			$db = new DataBase();
-			foreach ($db->Query("SELECT * FROM produse") as $v)
+			$db = new Db();
+			foreach ($db->query("SELECT * FROM produse") as $v)
 			{
 				echo "<li><a href = '../produs.php?id=".$v['ID']."'>".$v['Denumire']."</a></li>";
 			}
@@ -31,7 +32,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="active"><a href="index.php"><span class="glyphicon glyphicon-user"></span> Administreaza</a></li>
-        <li><a href="logout.php">Logout</a></li>
+          <li><a href='logout.php'>Logout</a></li>
       </ul>
     </div>
   </div>

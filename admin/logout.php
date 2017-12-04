@@ -1,7 +1,8 @@
 <?php
+session_start();
 include "../includes/head.php";
-//include "../includes/db.php";
-include "../classes/class_db.php";
+include "../classes/Db.php";
+
 ?>
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -21,8 +22,8 @@ include "../classes/class_db.php";
 		<span class="caret"></span></a>
 		<ul class="dropdown-menu">
 		<?php
-        $db = new DataBase();
-		foreach ($db->Query("SELECT * FROM produse") as $v)
+        $db = new Db();
+		foreach ($db->query("SELECT * FROM produse") as $v)
 		{
 			echo "<li><a href = ../produs.php?id=".$v['ID'].">".$v['Denumire']."</a></li>";
 		}
@@ -39,8 +40,6 @@ include "../classes/class_db.php";
   </div>
 </nav>
 <?php
-
-session_start();
 if (isset ($_SESSION['logat']))
 {
 	session_destroy();

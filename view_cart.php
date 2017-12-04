@@ -1,46 +1,36 @@
 <?php
 include "includes/head.php";
-//include "includes/db.php";
-include "classes/class_db.php";
-include "classes/class_cos.php";
+include "classes/Db.php";
+include "classes/Cart.php";
 //print_r($_POST);
-$cos = new Cos;
-$db = new DataBase();
+$cart = new Cart;
+$db = new Db();
 if (isset ($_POST['delete']))
 {
-	$cos->GolesteCos($db);
+	$cart->emptyCart($db);
 }
 if (isset ($_POST['update']))
 {
 	foreach ($_POST as $k=>$v)
 	{
-		$cos->ActualizeazaCos($k, $v, $db);
+		$cart->updateCart($k, $v, $db);
 	}
 }
-$cos->IncarcaCos($db);
+//load the products from database into cart
+$cart->setProducts($db);
 if (isset ($_POST['id']) && isset ($_POST['quantity']))
 {
 	$id_product = $_POST['id'];
 	$quantity = $_POST['quantity'];	
 	$query_exist = "SELECT * FROM `cos` WHERE `ID` = $id_product";
-	$exist = $db->Query($query_exist);
-	if($exist)
-	{
-		$query_update = "UPDATE `cos` SET `cantitate` = $quantity + `cos`.`cantitate`  WHERE `cos`.`ID` = $id_product";
-	}
-	else
-	{
-		$query_update = "INSERT INTO `cos` (`ID`, `cantitate`) VALUES ($id_product, $quantity)";
-	}
+	$exist = $db->query($query_exist);
+    $query_update = $exist ? "UPDATE `cos` SET `cantitate` = $quantity + `cos`.`cantitate`  WHERE `cos`.`ID` = $id_product" : "INSERT INTO `cos` (`ID`, `cantitate`) VALUES ($id_product, $quantity)";
 	
-	$cos->AdaugaProdus($db,$query_update,$id_product,$quantity);
-	$cos->IncarcaCos($db);
-
+	$cart->addProduct($db,$query_update);
+	$cart->setProducts($db);
 }
 //var_dump ($exist);
-
 //print_r($cos);
-
 ?>
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -60,7 +50,7 @@ if (isset ($_POST['id']) && isset ($_POST['quantity']))
 		<span class="caret"></span></a>
 		<ul class="dropdown-menu">
 		<?php
-		foreach ($db->Query("SELECT * FROM produse") as $produs)
+		foreach ($db->query("SELECT * FROM produse") as $produs)
 		{
 			echo "<li><a href = produs.php?id=".$produs['ID'].">".$produs['Denumire']."</a></li>";
 		}
@@ -71,7 +61,7 @@ if (isset ($_POST['id']) && isset ($_POST['quantity']))
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="admin\index.php"><span class="glyphicon glyphicon-user"></span> Administreaza</a></li>
-        <li class="active"><a href="cos.php"><span class="glyphicon glyphicon-shopping-cart"></span> Vizualizare cos</a></li>
+        <li class="active"><a href="view_cart.php"><span class="glyphicon glyphicon-shopping-cart"></span> Vizualizare cos</a></li>
       </ul>
     </div>
   </div>
@@ -85,7 +75,7 @@ if (isset ($_POST['id']) && isset ($_POST['quantity']))
         <div class="panel-heading text-center">Lista produse</div>
         <div class="panel-body">
 		<?php
-			foreach ($db->Query("SELECT * FROM produse") as $v)
+			foreach ($db->query("SELECT * FROM produse") as $v)
 			{
 				$poza = $v['Poza'];
 				$id = $v['ID'];
@@ -102,10 +92,10 @@ if (isset ($_POST['id']) && isset ($_POST['quantity']))
         <div class="panel-body">
 			<?php
 				$query_exist2 = "SELECT * FROM `cos`";
-				$exist2 = $db->Query($query_exist2);
+				$exist2 = $db->query($query_exist2);
 				if (!isset ($_POST['checkout']))
 				{
-					include "includes/form_cos.html";
+					include "includes/form_cart.php";
 				}
 				elseif (!$exist2)
 				{

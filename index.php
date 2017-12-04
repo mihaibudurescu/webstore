@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php 
-	include 'includes/head.php';
-	//include 'includes/db.php';
-    include 'classes/class_db.php';
-	session_start();
-    $db = new DataBase();
+include 'includes/head.php';
+include 'classes/Db.php';
+session_start();
+$db = new Db();
  ?>
 
 <nav class="navbar navbar-inverse">
@@ -26,8 +25,7 @@
 		<span class="caret"></span></a>
 		<ul class="dropdown-menu">
 		<?php
-		//foreach ($pdo->query("SELECT * FROM produse") as $v)
-        foreach ($db->Query("SELECT * FROM produse") as $v)
+        foreach ($db->query("SELECT * FROM produse") as $v)
 		{
 			echo "<li><a href = 'produs.php?id=".$v['ID']."'>".$v['Denumire']."</a></li>";
 		}
@@ -44,7 +42,7 @@
 		}
 		else 
 		{
-			echo "<a href='cos.php'><span class='glyphicon glyphicon-shopping-cart'></span> Vizualizare cos</a></li>";
+			echo "<a href='view_cart.php'><span class='glyphicon glyphicon-shopping-cart'></span> Vizualizare cos</a></li>";
 		}
 		?>
       </ul>
@@ -60,8 +58,7 @@
         <div class="panel-heading">Lista produse</div>
         <div class="panel-body">
 		<?php
-			//foreach ($pdo->query("SELECT * FROM produse") as $v)
-            foreach($db->Query("SELECT * FROM produse") as $v)
+            foreach($db->query("SELECT * FROM produse") as $v)
 			{
 				$poza = $v['Poza'];
 				$id = $v['ID'];
