@@ -2,6 +2,7 @@
 include "../includes/head.php";
 include "../includes/navbar_admin.php";
 session_start();
+
 $form_login = <<<FORM
 	<form method ='post' action = '$_SERVER[PHP_SELF]'>
 	User: <input type = 'text' name='username'><br>

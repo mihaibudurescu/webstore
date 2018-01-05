@@ -1,6 +1,7 @@
 <?php 
 include "../includes/head.php";
 include "../includes/navbar_admin.php";
+const PICDIR = "../media";
 
 ?>
 <div class='col-sm-9 text-center'> 
@@ -26,10 +27,22 @@ if ($errors)
 }
 else
 {
-	$denumire = htmlspecialchars(trim($_POST['denumire']));
+    $denumire = htmlspecialchars(trim($_POST['denumire']));
 	$descriere = htmlspecialchars($_POST['descriere']);
 	$pret = trim($_POST['pret']);
-	$poza = htmlspecialchars($_POST['poza']);
+	$tmpname = $_FILES['poza']['tmp_name'];
+	$f = finfo_open(FILEINFO_MIME_TYPE);
+	$mime = finfo_file($f,$tmpname);
+	finfo_close($f);
+	if($mime !== 'image/jpeg'){
+		echo "<p>Fisierul nu este de tip JPG!</p>";
+	}
+	else {
+		$newfile = tempnam(PICDIR, 'img-');
+		$poza = "media/" . basename($newfile);
+		move_uploaded_file($tmpname, $newfile);
+	}
+	
 	$query = "INSERT INTO `produse` (`ID`,`Denumire`, `Descriere`,`Poza`,`Pret`) VALUES (NULL,'$denumire', '$descriere', '$poza', $pret)";
 	$db = new Db();
 	$add = $db->query($query);
@@ -40,7 +53,6 @@ else
 	}
 	else
 	{
-		
 		header("Location: /proiect2/admin/index.php");
 		//echo "<h4>Produsul a fost adaugat cu succes si are <strong>ID-ul:"."" .$pdo->lastInsertId();
 	}
